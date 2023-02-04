@@ -86,6 +86,13 @@ class pithermalcam:
         self._raw_image = np.zeros((24*32,))
         try:
             self.mlx.getFrame(self._raw_image)  # read mlx90640
+            
+            for i in range(len(self._raw_image)):
+                if self._raw_image[i] < -40:
+                    self._raw_image[i] = (self._raw_image[i-1] + self._raw_image [i+1])/2
+                if self._raw_image[i] > 300:
+                    self._raw_image[i] = (self._raw_image[i-1] + self._raw_image [i+1])/2
+                    
             self._temp_min = np.min(self._raw_image)
             self._temp_max = np.max(self._raw_image)
             self._raw_image=self._temps_to_rescaled_uints(self._raw_image,self._temp_min,self._temp_max)
