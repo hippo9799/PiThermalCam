@@ -120,6 +120,15 @@ def camera_read(use_f:bool = True, filter_image:bool = False):
                     logger.info(traceback.format_exc())
                     continue
                 raise
+                
+                
+            for i in range(len(image)):
+                if image[i] < -40:
+                    image[i] = (image[i-1] + image [i+1])/2
+                if image[i] > 300:
+                    image[i] = (image[i-1] + image [i+1])/2
+                
+                
             temp_min = np.min(image)
             temp_max = np.max(image)
             img=temps_to_rescaled_uints(image,temp_min,temp_max)
